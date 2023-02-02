@@ -23,34 +23,42 @@ while True:
             print(row)
 
     elif user_action.startswith('edit'):
-        number = int(user_action[5])
-        print(number)
-        number = number - 1
+        try:
+            number = int(user_action[5])
+            print(number)
+            number = number - 1
 
-        with open('tasks.txt', 'r') as file:
-            tasks = file.readlines()
+            with open('tasks.txt', 'r') as file:
+                tasks = file.readlines()
 
-        new_task = input ("Enter new task: ")
-        tasks[number] = new_task + '\n'
+            new_task = input ("Enter new task: ")
+            tasks[number] = new_task + '\n'
 
-        with open('tasks.txt', 'w') as file:
-            tasks = file.writelines(tasks)
+            with open('tasks.txt', 'w') as file:
+                tasks = file.writelines(tasks)
+        except ValueError:
+            print("Your command is not valid")
+            continue
 
     elif user_action.startswith('complete'):
-        number = int(user_action[9:])
+        try:
+            number = int(user_action[9:])
 
-        with open('tasks.txt', 'r') as file:
-            tasks = file.readlines()
+            with open('tasks.txt', 'r') as file:
+                tasks = file.readlines()
 
-        index = number - 1
-        task_to_remove = tasks[index].strip('\n')
-        tasks.pop(index)
+            index = number - 1
+            task_to_remove = tasks[index].strip('\n')
+            tasks.pop(index)
 
-        with open('tasks.txt', 'w') as file:
-            tasks = file.writelines(tasks)
+            with open('tasks.txt', 'w') as file:
+                tasks = file.writelines(tasks)
 
-        message = f"Task: {task_to_remove}, was removed from the list." 
-        print(message)   
+            message = f"Task: {task_to_remove}, was removed from the list." 
+            print(message)   
+        except: IndexError
+        print("There is no item with that number")    
+        continue
 
     elif 'exit' in user_action:
         break
