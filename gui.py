@@ -4,10 +4,13 @@ import PySimpleGUI as sg
 label = sg.Text("Type in a task")
 input_box = sg.InputText(tooltip="Enter task", key="task")
 add_task_button = sg.Button("Add")
+edit_task_button = sg.Button("Edit")
+list_box = sg.Listbox(values=functions.get_tasks(), key='tasks', 
+                      enable_events=True, size=[45, 10]), 
 
 window = sg.Window('Task tracker app', 
-                    layout=[[label], [input_box, add_task_button]], 
-                    font=('Helvetica', 15))
+                    layout=[[label], [input_box, add_task_button], [list_box, edit_task_button]],
+                    font=('Helvetica', 10))
 
 while True:
     event, values = window.read()
@@ -19,7 +22,18 @@ while True:
             new_task = values['task'] + "\n"
             tasks.append(new_task)
             functions.update_tasks(tasks)
+            window['tasks'].update(values=tasks)
+        case "Edit":
+            task_to_edit = values['tasks'][0]
+            new_task = values['task']
 
+            tasks = functions.get_tasks()
+            index = tasks.index(task_to_edit)
+            tasks[index] = new_task
+            functions.update_tasks(tasks)
+            window['tasks'].update(values=tasks)
+        case 'tasks':
+               window['task'].update(value=values['tasks'][0])     
         case sg.WIN_CLOSED:
             break
 
