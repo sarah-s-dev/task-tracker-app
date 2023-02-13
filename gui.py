@@ -1,6 +1,8 @@
 import functions
 import PySimpleGUI as sg
 
+sg.theme("Blue Mono")
+
 label = sg.Text("Type in a task")
 input_box = sg.InputText(tooltip="Enter task", key="task")
 add_task_button = sg.Button("Add")
@@ -30,22 +32,28 @@ while True:
             window['tasks'].update(values=tasks)
 
         case "Edit":
-            task_to_edit = values['tasks'][0]
-            new_task = values['task']
+            try:
+                task_to_edit = values['tasks'][0]
+                new_task = values['task']
 
-            tasks = functions.get_tasks()
-            index = tasks.index(task_to_edit)
-            tasks[index] = new_task
-            functions.update_tasks(tasks)
-            window['tasks'].update(values=tasks)
+                tasks = functions.get_tasks()
+                index = tasks.index(task_to_edit)
+                tasks[index] = new_task
+                functions.update_tasks(tasks)
+                window['tasks'].update(values=tasks)
+            except IndexError:
+                sg.popup("Please select a task first.", font=('Helvetica', 10))   
 
         case "Complete":
-            task_to_complete = values['tasks'][0]    
-            tasks = functions.get_tasks()
-            tasks.remove(task_to_complete)
-            functions.update_tasks(tasks)
-            window['tasks'].update(values=tasks)
-            window['task'].update(value="")
+            try:
+                task_to_complete = values['tasks'][0]    
+                tasks = functions.get_tasks()
+                tasks.remove(task_to_complete)
+                functions.update_tasks(tasks)
+                window['tasks'].update(values=tasks)
+                window['task'].update(value="")
+            except IndexError:
+                sg.popup("Please select a task first.", font=('Helvetica', 10))
 
         case "Exit":
             break    
