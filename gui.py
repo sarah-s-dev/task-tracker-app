@@ -21,8 +21,6 @@ window = sg.Window('Task tracker app',
 
 while True:
     event, values = window.read()
-    print(event)
-    print(values)
     match event:
         case "Add":
             tasks = functions.get_tasks()
